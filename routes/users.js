@@ -26,7 +26,7 @@ const {
 
 //search by ALL THINGS
 router.get("/", async function (req, res) {
-	console.log(req.query)
+	//console.log(req.query)
 	if (Object.keys(req.query).length !== 0) {
 		const users = await getAllUsersByTHING(req);
 		res.json({ success: true, payload: users });

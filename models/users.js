@@ -23,6 +23,45 @@ async function getAllUsersByID(id) {
 	return userByID;
 }
 
+
+// create an async function to return user by ID
+async function getAllUsersByTHING(req) {
+		//sub-function to convert request object to an array of key and value
+	let requestKeys = Object.entries(req.query);
+	//
+	console.log(requestKeys);
+
+	let searchParam = requestKeys[0][0];
+	let searchValue = requestKeys[0][1];
+
+	let result;
+	if (searchValue == true) {
+			result = await query(
+				`SELECT * 
+				FROM skamtable 
+				WHERE ${searchParam} = $1;`,
+				[searchValue]
+			);
+		} if (searchValue == false) {
+			result = await query(
+				`SELECT * 
+				FROM skamtable 
+				WHERE ${searchParam} = $1;`,
+				[searchValue]
+			);
+			}else {
+			result = await query(
+			`SELECT * 
+			FROM skamtable 
+			WHERE ${searchParam} ILIKE $1;`,
+			['%' + searchValue + '%']
+			);}
+
+	let userByTHING = result.rows;
+	return userByTHING;
+}
+
+
 // create an async function which adds new to existing user
 // add parameterized queries so that all columns of the user can be updated
 async function updateUserUsername(id, update) {
@@ -52,9 +91,11 @@ async function deleteUserById(id) {
 	return deletedUser;
 }
 
+
 module.exports = {
 	getAllUsers,
 	updateUserUsername,
 	deleteUserById,
 	getAllUsersByID,
+	getAllUsersByTHING
 };

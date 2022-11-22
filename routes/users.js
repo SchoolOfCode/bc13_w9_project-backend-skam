@@ -1,4 +1,4 @@
-//import express
+// import express
 // import express from "express";
 // const router = express.Router();
 
@@ -9,11 +9,17 @@ const {
 	getAllUsers,
 	updateUserUsername,
 	deleteUserById,
+	getAllUsersByID,
 } = require("../models/users");
 
 router.get("/", async function (req, res) {
 	const users = await getAllUsers();
 	res.json({ success: true, payload: users });
+});
+
+router.get("/:id", async function (req, res) {
+	const userByID = await getAllUsersByID(req.params.id);
+	res.json({ success: true, payload: userByID });
 });
 
 router.patch("/:id", async function (req, res) {

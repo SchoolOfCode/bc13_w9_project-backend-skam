@@ -3,12 +3,28 @@ const { query } = require("../db/index");
 
 // create async function which will return all users in the db
 async function getAllUsers() {
-	let result = await query(`SELECT username FROM skamtable`);
+	let result = await query(
+		`SELECT username 
+		FROM skamtable;`
+	);
 	let usernameResult = result.rows;
 	return usernameResult;
 }
 
+// create an async function to return user by ID
+async function getAllUsersByID(id) {
+	let result = await query(
+		`SELECT * 
+		FROM skamtable 
+		WHERE user_id=$1;`,
+		[id]
+	);
+	let userByID = result.rows;
+	return userByID;
+}
+
 // create an async function which adds new to existing user
+// add parameterized queries so that all columns of the user can be updated
 async function updateUserUsername(id, update) {
 	let result = await query(
 		`UPDATE skamtable
@@ -28,8 +44,8 @@ async function deleteUserById(id) {
 	// Query the database to delete a user and return the deleted user
 	let result = await query(
 		`DELETE 
-  FROM skamtable
-  WHERE user_id = $1 RETURNING *;`,
+        FROM skamtable
+        WHERE user_id = $1 RETURNING *;`,
 		[id]
 	);
 	let deletedUser = result.rows;
@@ -40,4 +56,5 @@ module.exports = {
 	getAllUsers,
 	updateUserUsername,
 	deleteUserById,
+	getAllUsersByID,
 };

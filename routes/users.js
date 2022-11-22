@@ -43,9 +43,9 @@ router.patch("/:id", async function (req, res) {
 	res.json({ success: true, payload: updateUsername });
 });
 
-router.delete("/:id", async function (req, res) {
-	const deletedUser = await deleteUserById(req.params.id);
-	res.json({ success: true, payload: deletedUser });
-});
+// router.delete("/:id", async function (req, res) {
+// 	const deletedUser = await deleteUserById(req.params.id);
+// 	res.json({ success: true, payload: deletedUser });
+// });
 
 module.exports = router;

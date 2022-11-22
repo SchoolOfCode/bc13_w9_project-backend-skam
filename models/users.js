@@ -23,9 +23,21 @@ async function updateUserUsername(id, update) {
 	return updatedUsername;
 }
 
-// create an async function which posts a new user
+// create an async function which deletes a user by the id
+async function deleteUserById(id) {
+	// Query the database to delete a user and return the deleted user
+	let result = await query(
+		`DELETE 
+  FROM skamtable
+  WHERE user_id = $1 RETURNING *;`,
+		[id]
+	);
+	let deletedUser = result.rows;
+	return deletedUser;
+}
 
 module.exports = {
 	getAllUsers,
 	updateUserUsername,
+	deleteUserById,
 };

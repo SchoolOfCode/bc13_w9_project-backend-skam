@@ -65,22 +65,26 @@ export async function getUsersByLang(programminglang, location, spokenlang) {
 	let sqlStatement = `SELECT * FROM skamtable WHERE `;
 	let sqlParams = [];
 	if (programminglang) {
-		sqlStatement += `programming_lang @>ARRAY[$1] `;
 		sqlParams.push(programminglang);
+		let indexOfArray = sqlParams.indexOf(programminglang) + 1;
+		sqlStatement += `programming_lang @>ARRAY[$${indexOfArray}] `;
 		if (location || spokenlang) {
 			sqlStatement += `AND `;
 		}
 	}
 
 	if (location) {
-		sqlStatement += `location = ${location} `;
+		sqlParams.push(location);
+		let indexOfArray = sqlParams.indexOf(location) + 1;
+		sqlStatement += `location ILIKE $${indexOfArray} `;
 	}
 	if (location && spokenlang) {
 		sqlStatement += `AND `;
 	}
 	if (spokenlang) {
-		sqlStatement += `spoken_lang @>ARRAY[$2] `;
 		sqlParams.push(spokenlang);
+		let indexOfArray = sqlParams.indexOf(spokenlang) + 1;
+		sqlStatement += `spoken_lang @>ARRAY[$${indexOfArray}] `;
 	}
 
 	let result = await query(sqlStatement, sqlParams);

@@ -31,8 +31,8 @@ router.get("/", async function (req, res) {
 		const users = await getAllUsersByTHING(req);
 		res.json({ success: true, payload: users });
 	} else {
-	const users = await getAllUsers();
-	res.json({ success: true, payload: users });
+		const users = await getAllUsers();
+		res.json({ success: true, payload: users });
 	}
 });
 
@@ -43,6 +43,7 @@ router.patch("/:id", async function (req, res) {
 	res.json({ success: true, payload: updateUsername });
 });
 
+// not necessary as users wont need to delete anything
 // router.delete("/:id", async function (req, res) {
 // 	const deletedUser = await deleteUserById(req.params.id);
 // 	res.json({ success: true, payload: deletedUser });

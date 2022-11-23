@@ -1,18 +1,20 @@
 // import express
 // import express from "express";
 // const router = express.Router();
+// import pkg from "express";
+// const { request, express } = pkg;
+// import { request, express } from "express";
+import express, { Router } from "express";
 
-const { request } = require("express");
-const express = require("express");
-const router = express.Router();
-
-const {
+import {
 	getAllUsers,
 	updateUserUsername,
-	deleteUserById,
-	getAllUsersByID,
 	getAllUsersByTHING,
-} = require("../models/users");
+} from "../models/users.js";
+
+const router = express.Router();
+
+// const { getAllUsers, updateUserUsername, getAllUsersByTHING } = default;
 
 // router.get("/", async function (req, res) {
 // 	const users = await getAllUsers();
@@ -32,7 +34,7 @@ router.get("/", async function (req, res) {
 		res.json({ success: true, payload: users });
 	} else {
 		const users = await getAllUsers();
-		res.json({ success: true, payload: users });
+		res.status(200).json({ success: true, payload: users });
 	}
 });
 
@@ -40,7 +42,7 @@ router.patch("/:id", async function (req, res) {
 	const data = req.body;
 	console.log(data);
 	const updateUsername = await updateUserUsername(req.params.id, data);
-	res.json({ success: true, payload: updateUsername });
+	res.status(200).json({ success: true, payload: updateUsername });
 });
 
 // not necessary as users wont need to delete anything
@@ -49,4 +51,4 @@ router.patch("/:id", async function (req, res) {
 // 	res.json({ success: true, payload: deletedUser });
 // });
 
-module.exports = router;
+export default router;

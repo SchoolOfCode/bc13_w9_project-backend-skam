@@ -4,11 +4,11 @@ import query from "../db/index.js";
 //create async function which will return all users in the db
 export async function getAllUsers() {
 	let result = await query(
-		`SELECT username
+		`SELECT *
 		FROM skamtable;`
 	);
-	let usernameResult = result.rows;
-	return usernameResult;
+	let userResult = result.rows;
+	return userResult;
 }
 
 // // create an async function to return user by ID

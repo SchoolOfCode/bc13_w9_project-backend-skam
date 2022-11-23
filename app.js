@@ -1,16 +1,16 @@
 // import express
 // const Express = pkg;
 // import pkg from "express";
-import Express from "express";
+import express from "express";
 import router from "./routes/users.js";
 
 //import cors to allow front end to fetch data from backend without getting blocked
 import cors from "cors";
 
-const app = Express();
+const app = express();
 const PORT = process.env.PORT;
 
-//app.use(json());
+app.use(express.json());
 
 app.use("/users", router);
 
@@ -20,3 +20,5 @@ app.use(cors());
 app.listen(PORT, function () {
 	console.log(`Server listening on port ${PORT}`);
 });
+
+export default app;

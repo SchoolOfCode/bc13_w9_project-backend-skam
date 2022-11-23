@@ -61,6 +61,25 @@ export async function updateUserUsername(id, update) {
 	return updatedUsername;
 }
 
+export async function getUsersByProLang(req) {
+	let requestKeys = Object.entries(req.query);
+	console.log(req.query);
+	console.log(requestKeys);
+
+	let searchParam = requestKeys[0][0];
+	let searchValue = requestKeys[0][1];
+
+	let result = await query(
+		`SELECT * FROM skamtable 
+		WHERE ${searchParam} @>ARRAY[$1]`, [searchValue]
+	);
+let userByProLang = result.rows;
+return userByProLang;
+}
+
+
+
+
 // create an async function which deletes a user by the id
 // async function deleteUserById(id) {
 // 	// Query the database to delete a user and return the deleted user

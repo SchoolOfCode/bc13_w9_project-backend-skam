@@ -10,6 +10,7 @@ import {
 	getAllUsers,
 	updateUserUsername,
 	getAllUsersByTHING,
+	getUsersByProLang,
 } from "../models/users.js";
 
 const router = express.Router();
@@ -44,6 +45,12 @@ router.patch("/:id", async function (req, res) {
 	const updateUsername = await updateUserUsername(req.params.id, data);
 	res.status(200).json({ success: true, payload: updateUsername });
 });
+
+router.get("/byProLang",async function (req, res) {
+	const users = await getUsersByProLang(req);
+	res.status(200).json({success: true, payload: users });
+	
+})
 
 // not necessary as users wont need to delete anything
 // router.delete("/:id", async function (req, res) {

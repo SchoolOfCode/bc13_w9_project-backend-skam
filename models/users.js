@@ -60,25 +60,33 @@ export async function updateUserUsername(id, update) {
 	//console.log(result);
 	return updatedUsername;
 }
+// tjis function means you can do multple queries at one time
+export async function getUsersByLang(programminglang, location, spokenlang) {
+	let sqlStatement = `SELECT * FROM skamtable WHERE `;
+	let sqlParams = [];
+	if (programminglang) {
+		sqlStatement += `programming_lang @>ARRAY[$1] `;
+		sqlParams.push(programminglang);
+		if (location || spokenlang) {
+			sqlStatement += `AND `;
+		}
+	}
 
-export async function getUsersByLang(req) {
-	let requestKeys = Object.entries(req.query);
-	console.log(req.query);
-	console.log(requestKeys);
+	if (location) {
+		sqlStatement += `location = ${location} `;
+	}
+	if (location && spokenlang) {
+		sqlStatement += `AND `;
+	}
+	if (spokenlang) {
+		sqlStatement += `spoken_lang @>ARRAY[$2] `;
+		sqlParams.push(spokenlang);
+	}
 
-	let searchParam = requestKeys[0][0];
-	let searchValue = requestKeys[0][1];
-
-	let result = await query(
-		`SELECT * FROM skamtable 
-		WHERE ${searchParam} @>ARRAY[$1]`, [searchValue]
-	);
-let userByLang = result.rows;
-return userByLang;
+	let result = await query(sqlStatement, sqlParams);
+	let userByLang = result.rows;
+	return userByLang;
 }
-
-
-
 
 // create an async function which deletes a user by the id
 // async function deleteUserById(id) {

@@ -76,7 +76,7 @@ export async function getUsersByLang(programminglang, location, spokenlang) {
 	if (location) {
 		sqlParams.push(location);
 		let indexOfArray = sqlParams.indexOf(location) + 1;
-		sqlStatement += `location ILIKE $${indexOfArray} `;
+		sqlStatement += `location = $${indexOfArray} `;
 	}
 	if (location && spokenlang) {
 		sqlStatement += `AND `;

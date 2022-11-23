@@ -92,6 +92,21 @@ export async function getUsersByLang(programminglang, location, spokenlang) {
 	return userByLang;
 }
 
+//MEGA MEGA SEARCH MODEL
+export async function getAllUsersByKeyword(keyword) {
+	let result = await query(
+		`SELECT *
+		FROM skamtable
+		WHERE $1 
+		IN (username, name, location, email, phone, photo, twitter, linkedin, github, bio, looking_to_hire, looking_to_work, looking_to_teach, looking_to_collab)
+		OR spoken_lang @>ARRAY[$1]
+		OR programming_lang @>ARRAY[$1];`,
+		[keyword]
+	);
+	let userByKeyword = result.rows;
+	return userByKeyword;
+}
+
 // create an async function which deletes a user by the id
 // async function deleteUserById(id) {
 // 	// Query the database to delete a user and return the deleted user

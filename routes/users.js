@@ -11,6 +11,7 @@ import {
 	updateUserUsername,
 	getAllUsersByTHING,
 	getUsersByLang,
+	getAllUsersByKeyword,
 } from "../models/users.js";
 
 const router = express.Router();
@@ -59,5 +60,11 @@ router.get("/byLang", async function (req, res) {
 // 	const deletedUser = await deleteUserById(req.params.id);
 // 	res.json({ success: true, payload: deletedUser });
 // });
+
+//MEGA MEGA SEARCH ROUTE
+router.get("/:keyword", async function (req, res) {
+	const userByKeyword = await getAllUsersByKeyword(req.params.keyword);
+	res.json({ success: true, payload: userByKeyword });
+});
 
 export default router;

@@ -61,7 +61,7 @@ export async function updateUserUsername(id, update) {
 	return updatedUsername;
 }
 
-export async function getUsersByProLang(req) {
+export async function getUsersByLang(req) {
 	let requestKeys = Object.entries(req.query);
 	console.log(req.query);
 	console.log(requestKeys);
@@ -73,8 +73,8 @@ export async function getUsersByProLang(req) {
 		`SELECT * FROM skamtable 
 		WHERE ${searchParam} @>ARRAY[$1]`, [searchValue]
 	);
-let userByProLang = result.rows;
-return userByProLang;
+let userByLang = result.rows;
+return userByLang;
 }
 
 

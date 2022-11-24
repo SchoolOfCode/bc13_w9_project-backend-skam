@@ -47,7 +47,7 @@ router.patch("/:id", async function (req, res) {
 	res.status(200).json({ success: true, payload: updateUsername });
 });
 
-router.get("/byLang", async function (req, res) {
+router.get("/byFilter", async function (req, res) {
 	const programminglang = req.query.programming_language;
 	const location = req.query.location;
 	const spokenlang = req.query.spoken_language;

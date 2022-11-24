@@ -9,12 +9,12 @@ import {
 const tableRouter = express.Router();
 
 
-tableRouter.get("/programming-languages", async function (req, res) {
+tableRouter.get("/programming_languages", async function (req, res) {
 	const pLangs = await getAllProgrammingLanguages();
 	res.status(200).json({ success: true, payload: pLangs });
 });
 
-tableRouter.get("/spoken-languages", async function (req, res) {
+tableRouter.get("/spoken_languages", async function (req, res) {
 	const sLangs = await getAllSpokenLanguages();
 	res.status(200).json({ success: true, payload: sLangs });
 });

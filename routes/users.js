@@ -48,9 +48,9 @@ router.patch("/:id", async function (req, res) {
 });
 
 router.get("/byLang", async function (req, res) {
-	const programminglang = req.query.programming_lang;
+	const programminglang = req.query.programming_language;
 	const location = req.query.location;
-	const spokenlang = req.query.spoken_lang;
+	const spokenlang = req.query.spoken_language;
 	const users = await getUsersByLang(programminglang, location, spokenlang);
 	res.status(200).json({ success: true, payload: users });
 });
@@ -66,5 +66,10 @@ router.get("/:keyword", async function (req, res) {
 	const userByKeyword = await getAllUsersByKeyword(req.params.keyword);
 	res.json({ success: true, payload: userByKeyword });
 });
+
+
+
+
+
 
 export default router;

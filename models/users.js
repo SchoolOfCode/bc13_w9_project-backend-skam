@@ -62,8 +62,11 @@ export async function updateUserUsername(id, update) {
 }
 // tjis function means you can do multple queries at one time
 export async function getUsersByLang(programminglang, location, spokenlang) {
-	let sqlStatement = `SELECT * FROM skamtable WHERE `;
+	let sqlStatement = `SELECT * FROM skamtable `;
 	let sqlParams = [];
+	if (programminglang || spokenlang || location) {
+		sqlStatement += `WHERE `
+	}
 	if (programminglang) {
 		sqlParams.push(programminglang);
 		let indexOfArray = sqlParams.indexOf(programminglang) + 1;
@@ -86,7 +89,7 @@ export async function getUsersByLang(programminglang, location, spokenlang) {
 		let indexOfArray = sqlParams.indexOf(spokenlang) + 1;
 		sqlStatement += `spoken_lang @>ARRAY[$${indexOfArray}] `;
 	}
-
+	console.log({sqlStatement, sqlParams})
 	let result = await query(sqlStatement, sqlParams);
 	let userByLang = result.rows;
 	return userByLang;

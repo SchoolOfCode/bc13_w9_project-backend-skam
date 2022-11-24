@@ -3,6 +3,7 @@
 // import pkg from "express";
 import express from "express";
 import router from "./routes/users.js";
+import tableRouter from './routes/tables.js';
 
 //import cors to allow front end to fetch data from backend without getting blocked
 import cors from "cors";
@@ -19,6 +20,8 @@ app.use(express.json());
 app.use(cors("*"));
 
 app.use("/users", router);
+
+app.use("/tables", tableRouter);
 
 app.listen(PORT, function () {
 	console.log(`Server listening on port ${PORT}`);

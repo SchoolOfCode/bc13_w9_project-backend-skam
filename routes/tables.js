@@ -1,21 +1,21 @@
 import express, { Router } from "express";
 
 import {
-	getAllPLangs,
-    getAllSLangs,
+	getAllProgrammingLanguages,
+    getAllSpokenLanguages,
     getAllLocations
 } from "../models/tables.js";
 
 const tableRouter = express.Router();
 
 
-tableRouter.get("/pLangs", async function (req, res) {
-	const pLangs = await getAllPLangs();
+tableRouter.get("/programming-languages", async function (req, res) {
+	const pLangs = await getAllProgrammingLanguages();
 	res.status(200).json({ success: true, payload: pLangs });
 });
 
-tableRouter.get("/sLangs", async function (req, res) {
-	const sLangs = await getAllSLangs();
+tableRouter.get("/spoken-languages", async function (req, res) {
+	const sLangs = await getAllSpokenLanguages();
 	res.status(200).json({ success: true, payload: sLangs });
 });
 

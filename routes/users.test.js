@@ -11,30 +11,41 @@
 
 import { expect, test } from "@jest/globals";
 import app from "../app.js";
+import {pool} from "../db/index.js";
 
 import supertest from "supertest";
 const request = supertest(app);
 
+afterAll(() => {
+	return pool.end();
+  });
+
 // format for test -> test(desciption, anon async function() { response -> request.get + what we expect })
-//it('example', async () => {
-//   const res = await request(app).get('/');
-//   expect(res).toHaveHTTPStatus(200);
-// });
 
 test("Get all the users in the database", async function () {
 	let response = await request.get("/users");
 	expect(response.status).toBe(200);
-	console.log(response.body.payload);
 	expect(response.body.success).toStrictEqual(true);
 	expect(response.body.payload).toBeInstanceOf(Array);
 });
 
 // Test that you can get users by email, phone, spoken language, programming language, looking to teach, looking to learn, looking to work, looking to hire, looking to collab
-//    For each of these
-//    response code = 200
-//    success = true
-//      outer level test -> payload is an array of objects
-//      second level test -> object contain whatever the search parameter was (e.g. email sophie@mail.com)
-test("The email parameter searched gives the correct user from the db", async function () {
-	let response = await request.get("/users");
+// test("The email parameter searched gives the correct user from the db", async function () {
+// 	let response = await request.get("/users");
+// });
+
+test("Filters provide suitable results when programming lang is CSS, location is UK and language is Klingon", async function(){
+	let response = await request.get("/users/byFilter/?programming_language=css&location=uk&spoken_language=klingon")
+	let resultThing = response.body.payload[0];
+	expect(resultThing).toBeInstanceOf(Object);
+	expect(resultThing.location).toBe('uk');
+	expect(resultThing.programming_lang).toContain('css')
+	expect(resultThing.spoken_lang).toContain('klingon')
 });
+
+test("Search  by any given keyword", async function(){
+	let response = await request.get("/users/mia")
+	let resultThing = response.body.payload[0];
+	expect(resultThing).toBeInstanceOf(Object);
+	expect(resultThing.name).toBe('mia');
+})

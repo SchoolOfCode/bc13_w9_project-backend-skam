@@ -1,7 +1,9 @@
-// create the function to get all users
 import query from "../db/index.js";
 
-//create async function which will return all users in the db
+/**
+ * Queries SQL database returning all information.
+ * @returns all users from table in JSON object
+ */ 
 export async function getAllUsers() {
 	let result = await query(
 		`SELECT *
@@ -12,79 +14,76 @@ export async function getAllUsers() {
 }
 
 
-// create an async function to return user by ID
-export async function getAllUsersByTHING(req) {
-	//sub-function to convert request object to an array of key and value
-	// splits the entry into a key and a pair (email:krish becomes email, krish)
-	let requestKeys = Object.entries(req.query);
-	console.log(req.query);
-	console.log(requestKeys);
+// export async function getAllUsersByTHING(req) {
+// 	//sub-function to convert request object to an array of key and value
+// 	// splits the entry into a key and a pair (email:krish becomes email, krish)
+// 	let requestKeys = Object.entries(req.query);
+// 	console.log(req.query);
+// 	console.log(requestKeys);
 	
-	let searchParam = requestKeys[0][0];
-	let searchValue = requestKeys[0][1];
+// 	let searchParam = requestKeys[0][0];
+// 	let searchValue = requestKeys[0][1];
 	
-	let result = await query(
-		`SELECT * 
-		FROM users 
-		WHERE ${searchParam} ILIKE $1;`,
-		["%" + searchValue + "%"]
-		);
+// 	let result = await query(
+// 		`SELECT * 
+// 		FROM users 
+// 		WHERE ${searchParam} ILIKE $1;`,
+// 		["%" + searchValue + "%"]
+// 		);
 		
-		let userByTHING = result.rows;
-		return userByTHING;
-	}
+// 		let userByTHING = result.rows;
+// 		return userByTHING;
+// 	}
 	
-	// create an async function which adds new to existing user
-	// add parameterized queries so that all columns of the user can be updated
-	export async function updateUserUsername(id, update) {
-		let result = await query(
-			`UPDATE users
-			SET username = $1
-			WHERE user_id = $2
-			RETURNING *;`,
-			[update.username, id]
-			);
-			let updatedUsername = result;
-			//console.log(id);
-			//console.log(result);
-			return updatedUsername;
-		}
-		// tjis function means you can do multple queries at one time
-		export async function getUsersByLang(programminglang, location, spokenlang) {
-			let sqlStatement = `SELECT * FROM users `;
-			let sqlParams = [];
-			if (programminglang || spokenlang || location) {
-				sqlStatement += `WHERE `
-			}
-			if (programminglang) {
-				sqlParams.push(programminglang);
-				let indexOfArray = sqlParams.indexOf(programminglang) + 1;
-				sqlStatement += `programming_lang @>ARRAY[$${indexOfArray}] `;
-				if (location || spokenlang) {
-					sqlStatement += `AND `;
-				}
-			}
-			
-			if (location) {
-				sqlParams.push(location);
-				let indexOfArray = sqlParams.indexOf(location) + 1;
-				sqlStatement += `location = $${indexOfArray} `;
-			}
-			if (location && spokenlang) {
-				sqlStatement += `AND `;
-			}
-			if (spokenlang) {
-				sqlParams.push(spokenlang);
-				let indexOfArray = sqlParams.indexOf(spokenlang) + 1;
-				sqlStatement += `spoken_lang @>ARRAY[$${indexOfArray}] `;
-			}
-			console.log({sqlStatement, sqlParams})
-			let result = await query(sqlStatement, sqlParams);
-			let userByLang = result.rows;
-			return userByLang;
-		}
+	/**
+	 * Queries database using given parameters as 'WHERE' filters.
+	 * @param {*} programminglang 
+	 * @param {*} location 
+	 * @param {*} spokenlang 
+	 * @returns all relevant user information as a JSON object.
+	 */
+		export async function getUsersByFilter(
+      programminglang,
+      location,
+      spokenlang
+    ) {
+      let sqlStatement = `SELECT * FROM users `;
+      let sqlParams = [];
+      if (programminglang || spokenlang || location) {
+        sqlStatement += `WHERE `;
+      }
+      if (programminglang) {
+        sqlParams.push(programminglang);
+        let indexOfArray = sqlParams.indexOf(programminglang) + 1;
+        sqlStatement += `programming_lang @>ARRAY[$${indexOfArray}] `;
+        if (location || spokenlang) {
+          sqlStatement += `AND `;
+        }
+      }
+      if (location) {
+        sqlParams.push(location);
+        let indexOfArray = sqlParams.indexOf(location) + 1;
+        sqlStatement += `location = $${indexOfArray} `;
+      }
+      if (location && spokenlang) {
+        sqlStatement += `AND `;
+      }
+      if (spokenlang) {
+        sqlParams.push(spokenlang);
+        let indexOfArray = sqlParams.indexOf(spokenlang) + 1;
+        sqlStatement += `spoken_lang @>ARRAY[$${indexOfArray}] `;
+      }
+    //   console.log({ sqlStatement, sqlParams });
+      let result = await query(sqlStatement, sqlParams);
+      let userByFilter = result.rows;
+      return userByFilter;
+    }
 		
-		//MEGA MEGA SEARCH MODEL
+		/**
+		 * Takes in any single keyword and searches all users table columns returning rows where keyword is present.
+		 * @param {*} keyword 
+		 * @returns any relevant information containing keyword ina JSON object.
+		 */
 		export async function getAllUsersByKeyword(keyword) {
 			let result = await query(
 				`SELECT *

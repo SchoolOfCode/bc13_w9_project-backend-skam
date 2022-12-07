@@ -12,6 +12,7 @@ export async function getAllUsers() {
 		ON users.location = locations.value;`
 	);
 	let userResult = result.rows;
+	console.log(result.rows)
 	return userResult;
 }
 

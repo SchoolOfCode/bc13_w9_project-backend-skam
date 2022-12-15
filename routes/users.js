@@ -19,14 +19,7 @@ router.get("/", async function (req, res) {
 		res.status(200).json({ success: true, payload: users });
 	
 });
-/*
-router.patch("/:id", async function (req, res) {
-	const data = req.body;
-	console.log(data);
-	const updateUsername = await updateUserUsername(req.params.id, data);
-	res.status(200).json({ success: true, payload: updateUsername });
-});
-*/
+
 router.get("/byFilter", async function (req, res) {
 	const programminglang = req.query.programming_language;
 	const location = req.query.location;
@@ -41,9 +34,14 @@ router.get("/:keyword", async function (req, res) {
 	res.json({ success: true, payload: userByKeyword });
 });
 
-
-
-
-
-
 export default router;
+
+
+/*
+router.patch("/:id", async function (req, res) {
+	const data = req.body;
+	console.log(data);
+	const updateUsername = await updateUserUsername(req.params.id, data);
+	res.status(200).json({ success: true, payload: updateUsername });
+});
+*/

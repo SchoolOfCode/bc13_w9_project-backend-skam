@@ -16,27 +16,6 @@ export async function getAllUsers() {
 	return userResult;
 }
 
-// export async function getAllUsersByTHING(req) {
-// 	//sub-function to convert request object to an array of key and value
-// 	// splits the entry into a key and a pair (email:krish becomes email, krish)
-// 	let requestKeys = Object.entries(req.query);
-// 	console.log(req.query);
-// 	console.log(requestKeys);
-
-// 	let searchParam = requestKeys[0][0];
-// 	let searchValue = requestKeys[0][1];
-
-// 	let result = await query(
-// 		`SELECT *
-// 		FROM users
-// 		WHERE ${searchParam} ILIKE $1;`,
-// 		["%" + searchValue + "%"]
-// 		);
-
-// 		let userByTHING = result.rows;
-// 		return userByTHING;
-// 	}
-
 /**
  * Queries database using given parameters as 'WHERE' filters.
  * @param {*} programminglang
@@ -49,6 +28,7 @@ export async function getUsersByFilter(programminglang, location, spokenlang) {
 	let sqlParams = [];
 	if (programminglang || spokenlang || location) {
 		sqlStatement += `WHERE `;
+		console.log('sqlconsole', sqlStatement)
 	}
 	if (programminglang) {
 		sqlParams.push(programminglang);
@@ -122,3 +102,24 @@ export async function getAllUsersByKeyword(keyword) {
 // 	let userByID = result.rows;
 // 	return userByID;
 // }
+
+// export async function getAllUsersByTHING(req) {
+// 	//sub-function to convert request object to an array of key and value
+// 	// splits the entry into a key and a pair (email:krish becomes email, krish)
+// 	let requestKeys = Object.entries(req.query);
+// 	console.log(req.query);
+// 	console.log(requestKeys);
+
+// 	let searchParam = requestKeys[0][0];
+// 	let searchValue = requestKeys[0][1];
+
+// 	let result = await query(
+// 		`SELECT *
+// 		FROM users
+// 		WHERE ${searchParam} ILIKE $1;`,
+// 		["%" + searchValue + "%"]
+// 		);
+
+// 		let userByTHING = result.rows;
+// 		return userByTHING;
+// 	}

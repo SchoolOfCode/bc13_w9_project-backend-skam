@@ -12,7 +12,7 @@ export async function getAllUsers() {
 		ON users.location = locations.value;`
 	);
 	let userResult = result.rows;
-	console.log(result.rows)
+	console.log(result.rows);
 	return userResult;
 }
 
@@ -28,7 +28,7 @@ export async function getUsersByFilter(programminglang, location, spokenlang) {
 	let sqlParams = [];
 	if (programminglang || spokenlang || location) {
 		sqlStatement += `WHERE `;
-		console.log('sqlconsole', sqlStatement)
+		console.log("sqlconsole", sqlStatement);
 	}
 	if (programminglang) {
 		sqlParams.push(programminglang);
@@ -65,7 +65,8 @@ export async function getUsersByFilter(programminglang, location, spokenlang) {
 export async function getAllUsersByKeyword(keyword) {
 	let result = await query(
 		`SELECT *
-				FROM users
+				FROM users 
+				JOIN locations ON users.location = locations.value
 				WHERE $1 
 				IN (username, name, location, email, phone, photo, twitter, linkedin, github, bio, looking_to_hire, looking_to_work, looking_to_teach, looking_to_collab)
 				OR spoken_lang @>ARRAY[$1]
